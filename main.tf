@@ -1,5 +1,6 @@
 locals {
   name_prefix = "${var.vpc_name}-subnet-${var.label}"
+  acl_rules = [for i, acl_rule in var.acl_rules: merge(acl_rule, {priority=acl_rule["priority"] != null ? acl_rule["priority"] : 100 + i})]
 }
 
 resource null_resource print_name {
@@ -44,11 +45,11 @@ resource azurerm_network_security_group sg {
   resource_group_name = var.resource_group_name
 
   dynamic "security_rule" {
-    for_each = [ for acl_rule in var.acl_rules: acl_rule if lookup(acl_rule, "tcp", null) != null ]
+    for_each = [ for acl_rule in local.acl_rules: acl_rule if lookup(acl_rule, "tcp", null) != null ]
 
     content {
       name = security_rule.value["name"]
-      priority = 100 + security_rule.key
+      priority = tonumber(security_rule.value["priority"])
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "Tcp"
@@ -60,11 +61,11 @@ resource azurerm_network_security_group sg {
   }
 
   dynamic "security_rule" {
-    for_each = [ for acl_rule in var.acl_rules: acl_rule if lookup(acl_rule, "udp", null) != null ]
+    for_each = [ for acl_rule in local.acl_rules: acl_rule if lookup(acl_rule, "udp", null) != null ]
 
     content {
       name = security_rule.value["name"]
-      priority = 200 + security_rule.key
+      priority = tonumber(security_rule.value["priority"])
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "Udp"
@@ -76,11 +77,11 @@ resource azurerm_network_security_group sg {
   }
 
   dynamic "security_rule" {
-    for_each = [ for acl_rule in var.acl_rules: acl_rule if lookup(acl_rule, "tcp", null) == null && lookup(acl_rule, "udp", null) == null && lookup(acl_rule, "icmp", null) == null ]
+    for_each = [ for acl_rule in local.acl_rules: acl_rule if lookup(acl_rule, "tcp", null) == null && lookup(acl_rule, "udp", null) == null && lookup(acl_rule, "icmp", null) == null ]
 
     content {
       name = security_rule.value["name"]
-      priority = 300 + security_rule.key
+      priority = tonumber(security_rule.value["priority"])
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "*"
