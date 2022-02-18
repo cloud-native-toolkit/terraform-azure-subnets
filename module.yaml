@@ -6,6 +6,31 @@ tags:
   - devops
 versions:
   - platforms: []
-    dependencies: []
-    variables: []
+    providers:
+      - name: azurerm
+        source: "hashicorp/azurerm"
+    dependencies:
+      - id: resource_group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-azure-resource-group
+            version: ">= 1.0.0"
+      - id: vnet
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-azure-vpc
+            version: ">= 1.0.0"
+    variables:
+      - name: resource_group_name
+        moduleRef:
+          id: resource_group
+          output: name
+      - name: vpc_name
+        moduleRef:
+          id: vnet
+          output: name
+      - name: region
+        scope: global
+      - name: name
+        scope: module
+      - name: name_prefix
+        scope: global
 cloudProvider: azure
