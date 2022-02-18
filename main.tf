@@ -35,7 +35,7 @@ resource azurerm_network_security_group sg {
   resource_group_name = var.resource_group_name
 
   dynamic "security_rule" {
-    for_each = [ for acl_rule in var.acl_rules: rule if lookup(acl_rule, "tcp", null) != null ]
+    for_each = [ for acl_rule in var.acl_rules: acl_rule if lookup(acl_rule, "tcp", null) != null ]
 
     content {
       name = security_rule.value["name"]
@@ -51,7 +51,7 @@ resource azurerm_network_security_group sg {
   }
 
   dynamic "security_rule" {
-    for_each = [ for acl_rule in var.acl_rules: rule if lookup(acl_rule, "udp", null) != null ]
+    for_each = [ for acl_rule in var.acl_rules: acl_rule if lookup(acl_rule, "udp", null) != null ]
 
     content {
       name = security_rule.value["name"]
@@ -67,7 +67,7 @@ resource azurerm_network_security_group sg {
   }
 
   dynamic "security_rule" {
-    for_each = [ for acl_rule in var.acl_rules: rule if lookup(acl_rule, "tcp", null) == null && lookup(acl_rule, "udp", null) == null && lookup(acl_rule, "icmp", null) == null ]
+    for_each = [ for acl_rule in var.acl_rules: acl_rule if lookup(acl_rule, "tcp", null) == null && lookup(acl_rule, "udp", null) == null && lookup(acl_rule, "icmp", null) == null ]
 
     content {
       name = security_rule.value["name"]
