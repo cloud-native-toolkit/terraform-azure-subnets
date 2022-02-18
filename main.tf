@@ -21,6 +21,7 @@ resource azurerm_subnet subnets {
 
 data azurerm_subnet subnets {
   count = var.enabled ? 1 : 0
+  depends_on = [azurerm_subnet.subnets]
 
   name                 = local.name_prefix
   virtual_network_name = var.vpc_name
@@ -85,6 +86,7 @@ resource azurerm_network_security_group sg {
 
 data azurerm_network_security_group sg {
   count = var.enabled ? 1 : 0
+  depends_on = [azurerm_network_security_group.sg]
 
   name                = "${local.name_prefix}-sg"
   resource_group_name = var.resource_group_name
