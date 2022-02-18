@@ -6,7 +6,7 @@ resource null_resource print_name {
   count = var.enabled ? 1 : 0
 
   provisioner "local-exec" {
-    command = "VPC name: ${var.vpc_name}"
+    command = "echo 'VPC name: ${var.vpc_name}'"
   }
 }
 
