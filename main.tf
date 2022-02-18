@@ -1,6 +1,6 @@
 locals {
   name_prefix = "${var.vpc_name}-subnet-${var.label}"
-  acl_rules = [for i, acl_rule in var.acl_rules: merge(rule, {priority=tonumber(lookup(rule, "priority", i))})]
+  acl_rules = [for i, acl_rule in var.acl_rules: merge(acl_rule, {priority=tonumber(lookup(acl_rule, "priority", i))})]
 }
 
 resource null_resource print_name {
