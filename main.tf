@@ -3,8 +3,17 @@ locals {
   count = length(var.ipv4_cidr_blocks)
 }
 
+resource null_resource print_name {
+  count = var.enabled ? 1 : 0
+
+  provisioner "local-exec" {
+    command = "VPC name: ${var.vpc_name}"
+  }
+}
+
 data azurerm_virtual_network vnet {
   count = var.enabled ? 1 : 0
+  depends_on = [null_resource.print_name]
 
   name                = var.vpc_name
   resource_group_name = var.resource_group_name
