@@ -1,6 +1,6 @@
 output "count" {
   description = "The number of subnets created"
-  value       = local.count
+  value       = var._count
 }
 
 output "name" {

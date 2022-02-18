@@ -1,6 +1,5 @@
 locals {
   name_prefix = "${var.vpc_name}-subnet-${var.label}"
-  count = length(var.ipv4_cidr_blocks)
 }
 
 resource null_resource print_name {
@@ -20,19 +19,19 @@ data azurerm_virtual_network vnet {
 }
 
 resource azurerm_subnet subnets {
-  count = var.provision && var.enabled ? 1 : 0
+  count = var.provision && var.enabled ? var._count : 0
 
-  name                 = local.name_prefix
+  name                 = "${local.name_prefix}-${count.index + 1}"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vpc_name
-  address_prefixes     = var.ipv4_cidr_blocks
+  address_prefixes     = [var.ipv4_cidr_blocks[count.index]]
 }
 
 data azurerm_subnet subnets {
-  count = var.enabled ? 1 : 0
+  count = var.enabled ? var._count : 0
   depends_on = [azurerm_subnet.subnets]
 
-  name                 = local.name_prefix
+  name                 = "${local.name_prefix}-${count.index + 1}"
   virtual_network_name = var.vpc_name
   resource_group_name  = var.resource_group_name
 }
