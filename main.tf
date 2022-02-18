@@ -49,7 +49,7 @@ resource azurerm_network_security_group sg {
 
     content {
       name = security_rule.value["name"]
-      priority = lookup(security_rule.value, "priority", 100)
+      priority = 100
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "Tcp"
@@ -65,7 +65,7 @@ resource azurerm_network_security_group sg {
 
     content {
       name = security_rule.value["name"]
-      priority = lookup(security_rule.value, "priority", 100)
+      priority = 100
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "Udp"
@@ -81,7 +81,7 @@ resource azurerm_network_security_group sg {
 
     content {
       name = security_rule.value["name"]
-      priority = lookup(security_rule.value, "priority", 100)
+      priority = 100
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "*"
