@@ -85,6 +85,7 @@ module "subnets" {
     direction = "Inbound"
     source = "*"
     destination = "*"
+    priority = 100
     udp = {
       port_min = 1194
       port_max = 1194

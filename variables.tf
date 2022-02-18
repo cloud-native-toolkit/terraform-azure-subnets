@@ -38,7 +38,7 @@ variable "acl_rules" {
     direction=string,
     source=string,
     destination=string,
-    priority=optional(string),
+    priority=optional(number),
     tcp=optional(object({
       port_min=number,
       port_max=number,
