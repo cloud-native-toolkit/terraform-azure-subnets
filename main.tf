@@ -1,6 +1,6 @@
 locals {
   name_prefix = "${var.vpc_name}-subnet-${var.label}"
-  acl_rules = [for i, acl_rule in var.acl_rules: merge(acl_rule, {priority=lookup(acl_rule, "priority", i)})]
+  acl_rules = [for i, acl_rule in var.acl_rules: merge(acl_rule, {priority=i})]
 }
 
 resource null_resource print_name {
@@ -49,7 +49,7 @@ resource azurerm_network_security_group sg {
 
     content {
       name = security_rule.value["name"]
-      priority = parseint(security_rule.value["priority"], 10)
+      priority = tonumber(security_rule.value["priority"])
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "Tcp"
@@ -65,7 +65,7 @@ resource azurerm_network_security_group sg {
 
     content {
       name = security_rule.value["name"]
-      priority = parseint(security_rule.value["priority"], 10)
+      priority = tonumber(security_rule.value["priority"])
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "Udp"
@@ -81,7 +81,7 @@ resource azurerm_network_security_group sg {
 
     content {
       name = security_rule.value["name"]
-      priority = parseint(security_rule.value["priority"], 10)
+      priority = tonumber(security_rule.value["priority"])
       direction = security_rule.value["direction"]
       access = security_rule.value["action"]
       protocol = "*"
