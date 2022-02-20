@@ -37,6 +37,12 @@ output "vpc_id" {
   value       = length(data.azurerm_virtual_network.vnet) > 0 ? data.azurerm_virtual_network.vnet[0].id : ""
 }
 
+output "cidr_blocks" {
+  description = "The cidr block(s) assigned to the subnets"
+  value       = var.ipv4_cidr_blocks
+  depends_on = [data.azurerm_subnet.subnets]
+}
+
 output "enabled" {
   value = var.enabled
 }
