@@ -71,3 +71,11 @@ variable "enabled" {
   description = "Flag to indicate that IBM VPC module should be enabled"
   default     = true
 }
+
+variable "service_endpoints" {
+  type        = list(string)
+  description = "The list of service endpoints for the subnet"
+  default     = [
+    "Microsoft.ContainerRegistry"
+  ]
+}

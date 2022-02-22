@@ -26,6 +26,7 @@ resource azurerm_subnet subnets {
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.vpc_name
   address_prefixes     = [var.ipv4_cidr_blocks[count.index]]
+  service_endpoints    = var.service_endpoints
 }
 
 data azurerm_subnet subnets {
