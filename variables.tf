@@ -79,3 +79,9 @@ variable "service_endpoints" {
     "Microsoft.ContainerRegistry"
   ]
 }
+
+variable "disable_private_link_endpoint_network_policies" {
+  type        = bool
+  description = "Flag to disable private link endpoint network policies in the subnet."
+  default     = false
+}

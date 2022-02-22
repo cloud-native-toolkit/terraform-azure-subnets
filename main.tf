@@ -27,6 +27,7 @@ resource azurerm_subnet subnets {
   virtual_network_name = var.vpc_name
   address_prefixes     = [var.ipv4_cidr_blocks[count.index]]
   service_endpoints    = var.service_endpoints
+  enforce_private_link_endpoint_network_policies = var.disable_private_link_endpoint_network_policies
 }
 
 data azurerm_subnet subnets {
