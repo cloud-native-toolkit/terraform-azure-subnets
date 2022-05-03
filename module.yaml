@@ -1,6 +1,6 @@
-name: azure-vpc-subnets
+name: azure-vnet-subnets
 type: terraform
-description: Module to provision vpc-subnets on azure
+description: Module to provision vnet-subnets on azure
 tags:
   - tools
   - devops
@@ -16,8 +16,8 @@ versions:
             version: ">= 1.0.0"
       - id: vnet
         refs:
-          - source: github.com/cloud-native-toolkit/terraform-azure-vpc
-            version: ">= 1.0.0"
+          - source: github.com/cloud-native-toolkit/terraform-azure-vnet
+            version: ">= 1.0.2"
     variables:
       - name: resource_group_name
         moduleRef:
