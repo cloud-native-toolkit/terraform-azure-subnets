@@ -48,7 +48,7 @@ provider "azurerm" {
 }
 
 module "subnets" {
-  source = "github.com/cloud-native-toolkit/terraform-azure-vpc-subnets"
+  source = "github.com/cloud-native-toolkit/terraform-azure-subnets"
 
   resource_group_name = module.resource_group.name
   region = var.region
