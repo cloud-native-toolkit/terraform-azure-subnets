@@ -12,6 +12,11 @@ variable "vpc_name" {
   type        = string
   description = "The name of the vpc instance"
 }
+variable "subnet_name" {
+  type        = string
+  description = "The name of the subnet instance"
+  default = ""
+}
 
 variable "label" {
   type        = string
