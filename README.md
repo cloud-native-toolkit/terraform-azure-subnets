@@ -54,7 +54,6 @@ module "subnets" {
   region = var.region
   vpc_name = module.vpc.name
   ipv4_cidr_blocks = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
-  enabled = var.enabled
   acl_rules = [{
     name = "ssh-inbound"
     action = "Allow"
