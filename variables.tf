@@ -71,11 +71,6 @@ variable "acl_rules" {
   default = []
 }
 
-variable "enabled" {
-  type        = bool
-  description = "Flag to indicate that IBM VPC module should be enabled"
-  default     = true
-}
 
 variable "service_endpoints" {
   type        = list(string)

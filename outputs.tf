@@ -24,7 +24,7 @@ output "subnets" {
 
 output "acl_id" {
   description = "The id of the network acl for the subnets"
-  value       = length(data.azurerm_network_security_group.sg) > 0 ? data.azurerm_network_security_group.sg[0].id : ""
+  value       = length(data.azurerm_network_security_group.sg) > 0 ? data.azurerm_network_security_group.sg.id : ""
 }
 
 output "vpc_name" {
@@ -34,7 +34,7 @@ output "vpc_name" {
 
 output "vpc_id" {
   description = "The id of the VPC where the subnets were provisioned"
-  value       = length(data.azurerm_virtual_network.vnet) > 0 ? data.azurerm_virtual_network.vnet[0].id : ""
+  value       = length(data.azurerm_virtual_network.vnet) > 0 ? data.azurerm_virtual_network.vnet.id : ""
 }
 
 output "cidr_blocks" {
@@ -43,6 +43,3 @@ output "cidr_blocks" {
   depends_on = [data.azurerm_subnet.subnets]
 }
 
-output "enabled" {
-  value = var.enabled
-}

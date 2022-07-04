@@ -6,7 +6,6 @@ module "subnets" {
   vpc_name = module.vnet.name
   _count = 3
   ipv4_cidr_blocks = ["10.1.1.0/24", "10.1.2.0/24", "10.1.3.0/24"]
-  enabled = var.enabled
   acl_rules = [{
     name = "ssh-inbound"
     action = "Allow"
@@ -44,10 +43,4 @@ module "subnets" {
       source_port_max = 1194
     }
   }]
-}
-
-resource null_resource print_enabled {
-  provisioner "local-exec" {
-    command = "echo -n '${module.subnets.enabled}' > .enabled"
-  }
 }
