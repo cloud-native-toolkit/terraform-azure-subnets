@@ -34,7 +34,7 @@ output "vpc_name" {
 
 output "vpc_id" {
   description = "The id of the VPC where the subnets were provisioned"
-  value       = length(data.azurerm_virtual_network.vnet) > 0 ? data.azurerm_virtual_network.vnet[0].id : ""
+  value       = length(data.azurerm_virtual_network.vnet) > 0 ? data.azurerm_virtual_network.vnet.id : ""
 }
 
 output "cidr_blocks" {
