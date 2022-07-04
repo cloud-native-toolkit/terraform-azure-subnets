@@ -43,6 +43,3 @@ output "cidr_blocks" {
   depends_on = [data.azurerm_subnet.subnets]
 }
 
-output "enabled" {
-  value = var.enabled
-}

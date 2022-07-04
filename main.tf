@@ -4,15 +4,12 @@ locals {
 }
 
 resource "null_resource" "print_name" {
-  count = var.enabled ? 1 : 0
-
   provisioner "local-exec" {
     command = "echo 'VPC name: ${var.vpc_name}'"
   }
 }
 
 data "azurerm_virtual_network" "vnet" {
-  count      = var.enabled ? 1 : 0
   depends_on = [null_resource.print_name]
 
   name                = var.vpc_name
@@ -20,7 +17,7 @@ data "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnets" {
-  count = var.provision && var.enabled ? var._count : 0
+  count = var._count
 
   name                                           = var.subnet_name == "" ? "${local.name_prefix}" : var.subnet_name
   resource_group_name                            = var.resource_group_name
@@ -31,7 +28,7 @@ resource "azurerm_subnet" "subnets" {
 }
 
 data "azurerm_subnet" "subnets" {
-  count      = var.enabled ? var._count : 0
+  count      = var._count
   depends_on = [azurerm_subnet.subnets]
 
   # name                 = "${local.name_prefix}-${count.index + 1}"
@@ -41,7 +38,7 @@ data "azurerm_subnet" "subnets" {
 }
 
 resource "azurerm_network_security_group" "sg" {
-  count = var.provision && var.enabled ? 1 : 0
+  count = var.provision ? 1 : 0
 
   name                = "${local.name_prefix}-sg"
   location            = var.region
@@ -97,7 +94,6 @@ resource "azurerm_network_security_group" "sg" {
 }
 
 data "azurerm_network_security_group" "sg" {
-  count      = var.enabled ? 1 : 0
   depends_on = [azurerm_network_security_group.sg]
 
   name                = "${local.name_prefix}-sg"
