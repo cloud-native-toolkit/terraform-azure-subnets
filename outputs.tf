@@ -24,7 +24,7 @@ output "subnets" {
 
 output "acl_id" {
   description = "The id of the network acl for the subnets"
-  value       = length(data.azurerm_network_security_group.sg) > 0 ? data.azurerm_network_security_group.sg[0].id : ""
+  value       = length(data.azurerm_network_security_group.sg) > 0 ? data.azurerm_network_security_group.sg.id : ""
 }
 
 output "vpc_name" {
