@@ -1,4 +1,4 @@
-name: Verify and release module
+name: Verify
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
