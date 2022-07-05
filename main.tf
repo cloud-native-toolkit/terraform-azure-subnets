@@ -6,7 +6,7 @@ locals {
 
 resource "null_resource" "print_name" {
   provisioner "local-exec" {
-    command = "echo 'VPC name: ${var.vpc_name}'"
+    command = "echo 'VNet name: ${var.vpc_name}'"
   }
 }
 
@@ -20,7 +20,6 @@ data "azurerm_virtual_network" "vnet" {
 resource "azurerm_subnet" "subnets" {
   count = var._count
 
-  # name                                           = var.subnet_name == "" ? "${local.name_prefix}" : var.subnet_name
   name                                           = var._count > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   resource_group_name                            = var.resource_group_name
   virtual_network_name                           = var.vpc_name
@@ -33,8 +32,6 @@ data "azurerm_subnet" "subnets" {
   count      = var._count
   depends_on = [azurerm_subnet.subnets]
 
-  # name                 = "${local.name_prefix}-${count.index + 1}"
-  # name                 = var.subnet_name == "" ? "${local.name_prefix}" : var.subnet_name
   name                 = var._count > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   virtual_network_name = var.vpc_name
   resource_group_name  = var.resource_group_name
@@ -98,6 +95,8 @@ resource "azurerm_network_security_group" "sg" {
 
 data "azurerm_network_security_group" "sg" {
   depends_on = [azurerm_network_security_group.sg]
+
+  count = var.provision ? 1 : 0
 
   name                = "${local.name_prefix}-sg"
   resource_group_name = var.resource_group_name
