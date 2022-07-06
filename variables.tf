@@ -38,7 +38,7 @@ variable "ipv4_cidr_blocks" {
 
 variable "provision" {
   type        = bool
-  description = "Flag indicating that the subnet should be provisioned. If 'false' then the subnet will be looked up."
+  description = "Flag indicating that the NSG should be provisioned."
   default     = true
 }
 
@@ -51,16 +51,12 @@ variable "acl_rules" {
     destination=string,
     priority=optional(number),
     tcp=optional(object({
-      port_min=number,
-      port_max=number,
-      source_port_min=number,
-      source_port_max=number
+      destination_port_range=string,
+      source_port_range=string
     })),
     udp=optional(object({
-      port_min=number,
-      port_max=number,
-      source_port_min=number,
-      source_port_max=number
+      destination_port_range=string,
+      source_port_range=string
     })),
     icmp=optional(object({
       type=number,
