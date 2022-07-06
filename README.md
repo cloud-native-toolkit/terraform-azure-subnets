@@ -61,34 +61,18 @@ module "subnets" {
     source = "*"
     destination = "*"
     tcp = {
-      port_min = 22
-      port_max = 22
-      source_port_min = 22
-      source_port_max = 22
+      destination_port_range = "22"
+      source_port_range = "*"
     }
   }, {
-    name = "ssh-outbound"
-    action = "Allow"
-    direction = "Outbound"
-    source = "*"
-    destination = "*"
-    tcp = {
-      port_min = 22
-      port_max = 22
-      source_port_min = 22
-      source_port_max = 22
-    }
-  }, {
-    name = "vpn-inbound"
+    name = "internal-only"
     action = "Allow"
     direction = "Inbound"
-    source = "*"
-    destination = "*"
+    source = "10.0.0.0/16"
+    destination = "10.0.0.0/24"
     udp = {
-      port_min = 1194
-      port_max = 1194
-      source_port_min = 1194
-      source_port_max = 1194
+      destination_port_range = "1024 - 2048"
+      source_port_range = "*"
     }
   }]
 }
