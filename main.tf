@@ -55,8 +55,8 @@ resource "azurerm_network_security_group" "sg" {
       protocol                   = "Tcp"
       source_address_prefix      = security_rule.value["source"]
       destination_address_prefix = security_rule.value["destination"]
-      source_port_range          = "${lookup(security_rule.value["tcp"], "source_port_min", 0)} - ${lookup(security_rule.value["tcp"], "source_port_max", 65535)}"
-      destination_port_range     = "${lookup(security_rule.value["tcp"], "port_min", 0)} - ${lookup(security_rule.value["tcp"], "port_max", 65535)}"
+      source_port_range          = lookup(security_rule.value["tcp"], "source_port_range", "*")
+      destination_port_range     = lookup(security_rule.value["tcp"], "destination_port_range", "*")
     }
   }
 
@@ -71,8 +71,8 @@ resource "azurerm_network_security_group" "sg" {
       protocol                   = "Udp"
       source_address_prefix      = security_rule.value["source"]
       destination_address_prefix = security_rule.value["destination"]
-      source_port_range          = "${lookup(security_rule.value["udp"], "source_port_min", 0)} - ${lookup(security_rule.value["udp"], "source_port_max", 65535)}"
-      destination_port_range     = "${lookup(security_rule.value["udp"], "port_min", 0)} - ${lookup(security_rule.value["udp"], "port_max", 65535)}"
+      source_port_range          = lookup(security_rule.value["udp"], "source_port_range", "*")
+      destination_port_range     = lookup(security_rule.value["udp"], "destination_port_range", "*")
     }
   }
 
