@@ -12,6 +12,11 @@ output "ids" {
   value       = data.azurerm_subnet.subnets[*].id
 }
 
+output "id" {
+  description = "The ids of the created subnets"
+  value       = data.azurerm_subnet.subnets[0].id
+}
+
 output "names" {
   description = "The ids of the created subnets"
   value       = data.azurerm_subnet.subnets[*].name
