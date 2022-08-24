@@ -1,6 +1,6 @@
 output "count" {
   description = "The number of subnets created"
-  value       = var._count
+  value       = local.subnet_qty
 }
 
 output "name" {
@@ -29,16 +29,16 @@ output "subnets" {
 
 output "acl_id" {
   description = "The id of the network security group for the subnets"
-  value       = length(data.azurerm_network_security_group.sg) > 0 ? data.azurerm_network_security_group.sg[0].id : ""
+  value       = length(data.azurerm_network_security_group.sg) > 0 ? data.azurerm_network_security_group.nsg[0].id : ""
 }
 
-output "vpc_name" {
-  description = "The name of the VPC where the subnets were provisioned"
-  value       = var.vpc_name
+output "vnet_name" {
+  description = "The name of the VNet where the subnets were provisioned"
+  value       = var.vnet_name
 }
 
-output "vpc_id" {
-  description = "The id of the VPC where the subnets were provisioned"
+output "vnet_id" {
+  description = "The id of the VNet where the subnets were provisioned"
   value       = length(data.azurerm_virtual_network.vnet) > 0 ? data.azurerm_virtual_network.vnet.id : ""
 }
 
