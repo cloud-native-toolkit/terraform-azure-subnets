@@ -30,12 +30,6 @@ variable "ipv4_cidr_blocks" {
   default     = []
 }
 
-variable "provision" {
-  type        = bool
-  description = "Flag indicating that the NSG should be provisioned."
-  default     = true
-}
-
 variable "acl_rules" {
   type = list(object({
     name=string,
