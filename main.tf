@@ -1,7 +1,10 @@
 locals {
-  name_prefix = "${var.vpc_name}-subnet-${var.label}"
+  name_prefix   = "${var.vpc_name}-subnet-${var.label}"
   subnet_prefix = var.subnet_name == "" ? local.name_prefix : var.subnet_name
-  acl_rules   = [for i, acl_rule in var.acl_rules : merge(acl_rule, { priority = acl_rule["priority"] != null ? acl_rule["priority"] : 100 + i })]
+  acl_rules     = [for i, acl_rule in var.acl_rules : merge(acl_rule, { priority = acl_rule["priority"] != null ? acl_rule["priority"] : 100 + i })]
+  subnet_qty    = length(var.ipv4_cidr_blocks)
+
+  nsg_label     = "${local.name_prefix}-nsg"
 }
 
 resource "null_resource" "print_name" {
@@ -18,9 +21,9 @@ data "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnets" {
-  count = var._count
+  count = local.subnet_qty
 
-  name                                           = var._count > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
+  name                                           = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   resource_group_name                            = var.resource_group_name
   virtual_network_name                           = var.vpc_name
   address_prefixes                               = [var.ipv4_cidr_blocks[count.index]]
@@ -29,10 +32,10 @@ resource "azurerm_subnet" "subnets" {
 }
 
 data "azurerm_subnet" "subnets" {
-  count      = var._count
+  count      = local.subnet_qty
   depends_on = [azurerm_subnet.subnets]
 
-  name                 = var._count > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
+  name                 = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   virtual_network_name = var.vpc_name
   resource_group_name  = var.resource_group_name
 }
@@ -40,7 +43,7 @@ data "azurerm_subnet" "subnets" {
 resource "azurerm_network_security_group" "sg" {
   count = var.provision ? 1 : 0
 
-  name                = "${local.name_prefix}-sg"
+  name                = local.nsg_label
   location            = var.region
   resource_group_name = var.resource_group_name
 
@@ -98,12 +101,12 @@ data "azurerm_network_security_group" "sg" {
 
   count = var.provision ? 1 : 0
 
-  name                = "${local.name_prefix}-sg"
+  name                = local.nsg_label
   resource_group_name = var.resource_group_name
 }
 
 resource "azurerm_subnet_network_security_group_association" "subnet" {
-  count = var.provision ? var._count : 0
+  count = var.provision ? local.subnet_qty : 0
 
   subnet_id = azurerm_subnet.subnets[count.index].id
   network_security_group_id = azurerm_network_security_group.sg[0].id
