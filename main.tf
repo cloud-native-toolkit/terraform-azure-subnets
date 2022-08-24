@@ -40,7 +40,7 @@ data "azurerm_subnet" "subnets" {
   resource_group_name  = var.resource_group_name
 }
 
-resource "azurerm_network_security_group" "sg" {
+resource "azurerm_network_security_group" "nsg" {
   count = length(local.acl_rules) > 0  ? 1 : 0
 
   name                = local.nsg_label
@@ -96,8 +96,8 @@ resource "azurerm_network_security_group" "sg" {
   }
 }
 
-data "azurerm_network_security_group" "sg" {
-  depends_on = [azurerm_network_security_group.sg]
+data "azurerm_network_security_group" "nsg" {
+  depends_on = [azurerm_network_security_group.nsg]
 
   count = length(local.acl_rules) > 0 ? 1 : 0
 
@@ -109,5 +109,5 @@ resource "azurerm_subnet_network_security_group_association" "subnet" {
   count = length(local.acl_rules) > 0 ? local.subnet_qty : 0
 
   subnet_id = azurerm_subnet.subnets[count.index].id
-  network_security_group_id = azurerm_network_security_group.sg[0].id
+  network_security_group_id = azurerm_network_security_group.nsg[0].id
 }
