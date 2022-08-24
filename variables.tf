@@ -1,6 +1,6 @@
 variable "resource_group_name" {
   type        = string
-  description = "The name of the Azure resource group where the VPC has been provisioned."
+  description = "The name of the Azure resource group where the VNet has been provisioned."
 }
 
 variable "region" {
@@ -8,9 +8,9 @@ variable "region" {
   description = "The IBM Cloud region where the cluster will be/has been installed."
 }
 
-variable "vpc_name" {
+variable "vnet_name" {
   type        = string
-  description = "The name of the vpc instance"
+  description = "The name of the VNet instance"
 }
 variable "subnet_name" {
   type        = string

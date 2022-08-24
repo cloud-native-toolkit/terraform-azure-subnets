@@ -1,5 +1,5 @@
 locals {
-  name_prefix   = "${var.vpc_name}-subnet-${var.label}"
+  name_prefix   = "${var.vnet_name}-subnet-${var.label}"
   subnet_prefix = var.subnet_name == "" ? local.name_prefix : var.subnet_name
   acl_rules     = [for i, acl_rule in var.acl_rules : merge(acl_rule, { priority = acl_rule["priority"] != null ? acl_rule["priority"] : 100 + i })]
   subnet_qty    = length(var.ipv4_cidr_blocks)
@@ -9,14 +9,14 @@ locals {
 
 resource "null_resource" "print_name" {
   provisioner "local-exec" {
-    command = "echo 'VNet name: ${var.vpc_name}'"
+    command = "echo 'VNet name: ${var.vnet_name}'"
   }
 }
 
 data "azurerm_virtual_network" "vnet" {
   depends_on = [null_resource.print_name]
 
-  name                = var.vpc_name
+  name                = var.vnet_name
   resource_group_name = var.resource_group_name
 }
 
@@ -25,7 +25,7 @@ resource "azurerm_subnet" "subnets" {
 
   name                                           = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   resource_group_name                            = var.resource_group_name
-  virtual_network_name                           = var.vpc_name
+  virtual_network_name                           = var.vnet_name
   address_prefixes                               = [var.ipv4_cidr_blocks[count.index]]
   service_endpoints                              = var.service_endpoints
   enforce_private_link_endpoint_network_policies = var.disable_private_link_endpoint_network_policies
@@ -36,7 +36,7 @@ data "azurerm_subnet" "subnets" {
   depends_on = [azurerm_subnet.subnets]
 
   name                 = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
-  virtual_network_name = var.vpc_name
+  virtual_network_name = var.vnet_name
   resource_group_name  = var.resource_group_name
 }
 
