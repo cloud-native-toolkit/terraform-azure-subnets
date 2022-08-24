@@ -1,6 +1,6 @@
 variable "resource_group_name" {
   type        = string
-  description = "The name of the Azure resource group where the VPC has been provisioned."
+  description = "The name of the Azure resource group where the VNet has been provisioned."
 }
 
 variable "region" {
@@ -8,9 +8,9 @@ variable "region" {
   description = "The IBM Cloud region where the cluster will be/has been installed."
 }
 
-variable "vpc_name" {
+variable "vnet_name" {
   type        = string
-  description = "The name of the vpc instance"
+  description = "The name of the VNet instance"
 }
 variable "subnet_name" {
   type        = string
@@ -24,22 +24,10 @@ variable "label" {
   default     = "default"
 }
 
-variable "_count" {
-  type        = number
-  description = "The number of subnets that should be provisioned"
-  default     = 0
-}
-
 variable "ipv4_cidr_blocks" {
   type        = list(string)
   description = "List of ipv4 cidr blocks for the subnets that will be created (e.g. ['10.10.10.0/24']). If you are providing cidr blocks then a value must be provided for each of the subnets. If you don't provide cidr blocks for each of the subnets then values will be generated using the {ipv4_address_count} value."
   default     = []
-}
-
-variable "provision" {
-  type        = bool
-  description = "Flag indicating that the NSG should be provisioned."
-  default     = true
 }
 
 variable "acl_rules" {
