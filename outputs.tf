@@ -1,10 +1,12 @@
 output "count" {
   description = "The number of subnets created"
   value       = local.subnet_qty
+  depends_on = [data.azurerm_subnet.subnets]
 }
 
 output "name" {
   value = local.name_prefix
+  depends_on = [data.azurerm_subnet.subnets]
 }
 
 output "ids" {
@@ -35,6 +37,7 @@ output "acl_id" {
 output "vnet_name" {
   description = "The name of the VNet where the subnets were provisioned"
   value       = var.vnet_name
+  depends_on = [data.azurerm_subnet.subnets]
 }
 
 output "vnet_id" {
