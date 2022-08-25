@@ -22,6 +22,109 @@ versions:
       - name: resource_group_name
         type: string
         description: >-
+          The name of the Azure resource group where the VNet has been
+          provisioned.
+        moduleRef:
+          id: resource_group
+          output: name
+      - name: region
+        type: string
+        description: The IBM Cloud region where the cluster will be/has been installed.
+        scope: global
+      - name: vnet_name
+        type: string
+        description: The name of the VNet instance
+        moduleRef:
+          id: vnet
+          output: name
+      - name: subnet_name
+        type: string
+        description: The name of the subnet instance
+        default: ''
+      - name: label
+        type: string
+        description: Label for the subnets created
+        default: default
+      - name: ipv4_cidr_blocks
+        type: list(string)
+        description: >-
+          List of ipv4 cidr blocks for the subnets that will be created (e.g.
+          ['10.10.10.0/24']). If you are providing cidr blocks then a value must
+          be provided for each of the subnets. If you don't provide cidr blocks
+          for each of the subnets then values will be generated using the
+          {ipv4_address_count} value.
+        default: []
+      - name: acl_rules
+        type: |-
+          list(object({
+              name=string,
+              action=string,
+              direction=string,
+              source=string,
+              destination=string,
+              priority=optional(number),
+              tcp=optional(object({
+                destination_port_range=string,
+                source_port_range=string
+              })),
+              udp=optional(object({
+                destination_port_range=string,
+                source_port_range=string
+              })),
+              icmp=optional(object({
+                type=number,
+                code=optional(number)
+              })),
+            }))
+        description: List of rules to set on the subnet access control list
+        default: '[]'
+      - name: service_endpoints
+        type: list(string)
+        description: The list of service endpoints for the subnet
+        default:
+          - Microsoft.ContainerRegistry
+      - name: disable_private_link_endpoint_network_policies
+        type: bool
+        description: Flag to disable private link endpoint network policies in the subnet.
+        default: false
+    version: v1.3.6
+    outputs:
+      - name: count
+        description: The number of subnets created
+      - name: name
+      - name: ids
+        description: The ids of the created subnets
+      - name: id
+        description: The ids of the created subnets
+      - name: names
+        description: The ids of the created subnets
+      - name: subnets
+        description: The subnets that were created
+      - name: acl_id
+        description: The id of the network security group for the subnets
+      - name: vnet_name
+        description: The name of the VNet where the subnets were provisioned
+      - name: vnet_id
+        description: The id of the VNet where the subnets were provisioned
+      - name: cidr_blocks
+        description: The cidr block(s) assigned to the subnets
+  - platforms: []
+    providers:
+      - name: azurerm
+        source: hashicorp/azurerm
+    dependencies:
+      - id: resource_group
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-azure-resource-group
+            version: '>= 1.0.0'
+      - id: vnet
+        refs:
+          - source: github.com/cloud-native-toolkit/terraform-azure-vnet
+            version: '>= 1.0.2'
+    variables:
+      - name: resource_group_name
+        type: string
+        description: >-
           The name of the Azure resource group where the VPC has been
           provisioned.
         moduleRef:
