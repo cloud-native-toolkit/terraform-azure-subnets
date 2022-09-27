@@ -2,8 +2,7 @@ locals {
   name_prefix   = "${var.vnet_name}-subnet-${var.label}"
   subnet_prefix = var.subnet_name == "" ? local.name_prefix : var.subnet_name
   acl_rules     = [for i, acl_rule in var.acl_rules : merge(acl_rule, { priority = acl_rule["priority"] != null ? acl_rule["priority"] : 100 + i })]
-  subnet_qty    = length(var.ipv4_cidr_blocks)
-
+  subnet_qty    = var.provision ? length(var.ipv4_cidr_blocks) : 0
   nsg_label     = "${local.name_prefix}-nsg"
 }
 
@@ -32,8 +31,8 @@ resource "azurerm_subnet" "subnets" {
 }
 
 data "azurerm_subnet" "subnets" {
-  count      = local.subnet_qty
   depends_on = [azurerm_subnet.subnets]
+  count = local.subnet_qty
 
   name                 = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   virtual_network_name = var.vnet_name
@@ -41,7 +40,7 @@ data "azurerm_subnet" "subnets" {
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  count = length(local.acl_rules) > 0  ? 1 : 0
+  count = var.provision && length(local.acl_rules) > 0  ? 1 : 0
 
   name                = local.nsg_label
   location            = var.region
@@ -106,7 +105,7 @@ data "azurerm_network_security_group" "nsg" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "subnet" {
-  count = length(local.acl_rules) > 0 ? local.subnet_qty : 0
+  count = var.provision && length(local.acl_rules) > 0 ? local.subnet_qty : 0
 
   subnet_id = azurerm_subnet.subnets[count.index].id
   network_security_group_id = azurerm_network_security_group.nsg[0].id
