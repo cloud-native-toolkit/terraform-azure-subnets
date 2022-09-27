@@ -32,6 +32,7 @@ resource "azurerm_subnet" "subnets" {
 
 data "azurerm_subnet" "subnets" {
   depends_on = [azurerm_subnet.subnets]
+  count = local.subnet_qty
 
   name                 = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   virtual_network_name = var.vnet_name
