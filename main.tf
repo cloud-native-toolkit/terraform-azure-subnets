@@ -27,7 +27,8 @@ resource "azurerm_subnet" "subnets" {
   virtual_network_name                           = var.vnet_name
   address_prefixes                               = [var.ipv4_cidr_blocks[count.index]]
   service_endpoints                              = var.service_endpoints
-  enforce_private_link_endpoint_network_policies = var.disable_private_link_endpoint_network_policies
+  private_endpoint_network_policies_enabled      = var.disable_private_link_endpoint_network_policies ? false : true
+  private_link_service_network_policies_enabled  = var.disable_private_link_service_network_policies ? false : true
 }
 
 data "azurerm_subnet" "subnets" {

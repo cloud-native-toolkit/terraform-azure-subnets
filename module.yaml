@@ -29,4 +29,25 @@ versions:
           output: name
       - name: region
         scope: global
+    outputs:
+      - name: count
+        description: "The number of subnets created"
+      - name: name
+        description: "The name prefix for the subnets"
+      - name: ids
+        description: "List of the ids created"
+      - name: id
+        description: "The id of the first subnet"
+      - name: names
+        description: "List of the subnet names"
+      - name: subnets
+        description: "Object list of the subnets - id, zone and label."
+      - name: acl_id
+        description: "Id of the created network security group"
+      - name: vnet_name
+        description: "Pass-through of the VNet name associated with the subnets"
+      - name: vnet_id
+        description: "Pass-through of the VNet id associated with the subnets"
+      - name: cidr_blocks
+        description: "List of the CIDR blocks assigned to the subnets"
 cloudProvider: azure

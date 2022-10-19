@@ -75,3 +75,9 @@ variable "disable_private_link_endpoint_network_policies" {
   description = "Flag to disable private link endpoint network policies in the subnet."
   default     = false
 }
+
+variable "disable_private_link_service_network_policies" {
+  type        = bool
+  description = "Flag to disable private link service network policies in the subnet."
+  default     = false
+}
