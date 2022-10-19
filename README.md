@@ -98,6 +98,7 @@ This module has the following input variables:
 | acl_rules | Optional | [] | List of rules to create and associate with the subent(s) |
 | service_endpoints | Optional | Microsoft.ContainerRegistry | List of service endpoints for the subnet(s)|
 | disable_private_link_endpoint_network_policies | Optional | false | Flag to disable private link endpoint network policies in the subnet(s) |
+| disable_private_link_service_network_policies | Optional | false | Flag to disable private link service network policies in the subnet(s) |
 
 ## Output Variables
 
