@@ -44,7 +44,7 @@ versions:
         description: "Object list of the subnets - id, zone and label."
       - name: acl_id
         description: "Id of the created network security group"
-      - name: vnet-name
+      - name: vnet_name
         description: "Pass-through of the VNet name associated with the subnets"
       - name: vnet_id
         description: "Pass-through of the VNet id associated with the subnets"
