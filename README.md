@@ -19,11 +19,12 @@ The module depends on the following software components:
 
 #### Command-line tools
 
-- terraform >= v0.15
+- terraform >= v0.15 and < v1.3
+***Note that this module does nto support terraform version 1.3 and above***
 
 #### Terraform providers
 
-- Azure provider
+- Azure provider >= 3.27.0
 
 ### Module dependencies
 
