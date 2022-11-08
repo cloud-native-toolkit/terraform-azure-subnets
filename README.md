@@ -83,6 +83,25 @@ module "subnets" {
 }
 ```
 
+## Read Only Usage
+
+The module may be utilised in a read-only mode by setting provision=false.
+
+Doing so will cause the module to attempt to read an existing subnet that it is provided. Provide the resource group name, region, vnet name and subnet name in such circumstances to return the subnet details. ***Note that this method requires a single subnet name at a time***
+
+For example:
+```hcl-terraform
+module "subnet-query" {
+  source = "/home/richard/github/terraform-azure-subnets"
+
+  provision           = false
+  resource_group_name = module.resource_group.name
+  vnet_name           = module.vnet.name
+  region              = module.resource_group.region
+  subnet_name         = "test-subnet"
+}
+```
+
 ## Input Variables
 
 This module has the following input variables:

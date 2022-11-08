@@ -2,7 +2,7 @@ locals {
   name_prefix   = "${var.vnet_name}-subnet-${var.label}"
   subnet_prefix = var.subnet_name == "" ? local.name_prefix : var.subnet_name
   acl_rules     = [for i, acl_rule in var.acl_rules : merge(acl_rule, { priority = acl_rule["priority"] != null ? acl_rule["priority"] : 100 + i })]
-  subnet_qty    = var.provision ? length(var.ipv4_cidr_blocks) : 0
+  subnet_qty    = length(var.ipv4_cidr_blocks)
   nsg_label     = "${local.name_prefix}-nsg"
 }
 
@@ -20,7 +20,7 @@ data "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnets" {
-  count = local.subnet_qty
+  count = var.provision ? local.subnet_qty : 0
 
   name                                           = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   resource_group_name                            = var.resource_group_name
@@ -33,7 +33,7 @@ resource "azurerm_subnet" "subnets" {
 
 data "azurerm_subnet" "subnets" {
   depends_on = [azurerm_subnet.subnets]
-  count = local.subnet_qty
+  count = var.provision ? local.subnet_qty : 1
 
   name                 = local.subnet_qty > 1 ? "${local.subnet_prefix}-${count.index}" : local.subnet_prefix
   virtual_network_name = var.vnet_name
